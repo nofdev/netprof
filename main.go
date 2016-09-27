@@ -2,11 +2,11 @@ package main
 
 import (
 	"bytes"
-	"fmt"
-	"os/exec"
 	"flag"
+	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 )
@@ -29,7 +29,7 @@ func getTransmissionData(outPut bytes.Buffer) {
 
 func getPingData(outPut bytes.Buffer) {
 	var ll []string
-	nl :=0
+	nl := 0
 	for {
 		nl++
 		line, err := outPut.ReadString('\n')
@@ -58,33 +58,30 @@ func main() {
 	}
 
 	if *transmission {
-		cmd := exec.Command("netstat", "-e")
-		var out bytes.Buffer
-		cmd.Stdout = &out
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal(err)
-		}
-
 		for {
+			cmd := exec.Command("netstat", "-e")
+			var out bytes.Buffer
+			cmd.Stdout = &out
+			err := cmd.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
 			getTransmissionData(out)
 			time.Sleep(time.Second * 1)
 		}
 	}
 
 	if *ping != "" {
-		cmd := exec.Command("ping", "-n", "1", *ping)
-		var out bytes.Buffer
-		cmd.Stdout = & out
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal(err)
-		}
-
 		for {
+			cmd := exec.Command("ping", "-n", "1", *ping)
+			var out bytes.Buffer
+			cmd.Stdout = &out
+			err := cmd.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
 			getPingData(out)
 			time.Sleep(time.Second * 1)
 		}
 	}
-
 }
