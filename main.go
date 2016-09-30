@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -64,7 +63,8 @@ func main() {
 			cmd.Stdout = &out
 			err := cmd.Run()
 			if err != nil {
-				log.Fatal(err)
+				fmt.Printf("%v,%v\n", time.Now().Format("2006-01-02 15:04:05"), err)
+				continue
 			}
 			getTransmissionData(out)
 			time.Sleep(time.Second * 1)
@@ -78,7 +78,8 @@ func main() {
 			cmd.Stdout = &out
 			err := cmd.Run()
 			if err != nil {
-				log.Fatal(err)
+				fmt.Printf("%v,not_resp\n", time.Now().Format("2006-01-02 15:04:05"))
+				continue
 			}
 			getPingData(out)
 			time.Sleep(time.Second * 1)
